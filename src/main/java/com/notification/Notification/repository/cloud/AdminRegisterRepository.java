@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRegisterRepository extends JpaRepository<AdminRegister, Long> {
-    boolean existsByEmail(String email); // To check if an email already exists
+    boolean existsByEmail(String email);  // ✅ Added method to check if email exists
 }
