@@ -5,11 +5,9 @@ import com.notification.Notification.services.AdminRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-import java.util.HashMap;
-import java.util.Map;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -20,11 +18,12 @@ public class AdminRegisterController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerAdmin(@RequestBody AdminRegister adminRegister) {
-        String message = adminRegisterService.registerAdmin(adminRegister);
+        AdminRegister savedAdmin = adminRegisterService.registerAdmin(adminRegister);
 
-        // Return a JSON response instead of a plain string
+        // Create a JSON response with message and uniqueId
         Map<String, String> response = new HashMap<>();
-        response.put("message", message);
+        response.put("message", "Admin registered successfully");
+        response.put("uniqueId", savedAdmin.getUniqueId());  // ✅ Send uniqueId back
 
         return ResponseEntity.ok(response);
     }
