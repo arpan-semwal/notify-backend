@@ -3,6 +3,7 @@ package com.notification.Notification.models.cloud;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "admin_register")
@@ -12,6 +13,9 @@ public class AdminRegister {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, length = 4)
+    private String uniqueId;
+
     private String schoolName;
     private String city;
     private String address;
@@ -20,11 +24,13 @@ public class AdminRegister {
     private String password;
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference  // ✅ Prevents infinite recursion when converting to JSON
+    @JsonManagedReference
     private List<AdminCourse> courses;
 
     // Constructors
-    public AdminRegister() {}
+    public AdminRegister() {
+        this.uniqueId = generateUniqueId();
+    }
 
     public AdminRegister(String schoolName, String city, String address, String mobileNumber, String email, String password, List<AdminCourse> courses) {
         this.schoolName = schoolName;
@@ -34,9 +40,23 @@ public class AdminRegister {
         this.email = email;
         this.password = password;
         this.courses = courses;
+        this.uniqueId = generateUniqueId();
+    }
+
+    private String generateUniqueId() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder id = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            id.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return id.toString();
     }
 
     // Getters and Setters
+    public String getUniqueId() { return uniqueId; }
+    public void setUniqueId(String uniqueId) { this.uniqueId = uniqueId; }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -59,11 +79,10 @@ public class AdminRegister {
     public void setPassword(String password) { this.password = password; }
 
     public List<AdminCourse> getCourses() { return courses; }
-
     public void setCourses(List<AdminCourse> courses) {
         this.courses = courses;
         for (AdminCourse course : courses) {
-            course.setAdmin(this); // ✅ Ensures each course has an admin reference
+            course.setAdmin(this);
         }
     }
 }
