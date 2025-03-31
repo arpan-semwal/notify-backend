@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRegisterController {
@@ -20,10 +19,11 @@ public class AdminRegisterController {
     public ResponseEntity<Map<String, String>> registerAdmin(@RequestBody AdminRegister adminRegister) {
         AdminRegister savedAdmin = adminRegisterService.registerAdmin(adminRegister);
 
-        // Create a JSON response with message and uniqueId
+        // Create response
         Map<String, String> response = new HashMap<>();
         response.put("message", "Admin registered successfully");
-        response.put("uniqueId", savedAdmin.getUniqueId());  // ✅ Send uniqueId back
+        response.put("uniqueId", savedAdmin.getUniqueId());
+        response.put("institutionType", savedAdmin.getInstitutionType()); // ✅ Send type back
 
         return ResponseEntity.ok(response);
     }

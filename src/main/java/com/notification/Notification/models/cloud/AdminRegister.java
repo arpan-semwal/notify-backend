@@ -1,8 +1,7 @@
 package com.notification.Notification.models.cloud;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.List;
+
 import java.util.Random;
 
 @Entity
@@ -14,7 +13,7 @@ public class AdminRegister {
     private Long id;
 
     @Column(unique = true, length = 4)
-    private String uniqueId;
+    private String uniqueId; // ✅ Added unique ID
 
     private String schoolName;
     private String city;
@@ -22,27 +21,28 @@ public class AdminRegister {
     private String mobileNumber;
     private String email;
     private String password;
+    private String institutionType; // ✅ Added field for school/college
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<AdminCourse> courses;
-
-    // Constructors
+    // Default constructor
     public AdminRegister() {
-        this.uniqueId = generateUniqueId();
+        this.uniqueId = generateUniqueId(); // ✅ Auto-generate unique ID
     }
 
-    public AdminRegister(String schoolName, String city, String address, String mobileNumber, String email, String password, List<AdminCourse> courses) {
+    // Parameterized constructor
+    public AdminRegister(String schoolName, String city, String address,
+                         String mobileNumber, String email, String password,
+                         String institutionType) {
         this.schoolName = schoolName;
         this.city = city;
         this.address = address;
         this.mobileNumber = mobileNumber;
         this.email = email;
         this.password = password;
-        this.courses = courses;
-        this.uniqueId = generateUniqueId();
+        this.institutionType = institutionType;
+        this.uniqueId = generateUniqueId(); // ✅ Auto-generate unique ID
     }
 
+    // Unique ID generator (4-character alphanumeric)
     private String generateUniqueId() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder id = new StringBuilder();
@@ -54,11 +54,11 @@ public class AdminRegister {
     }
 
     // Getters and Setters
-    public String getUniqueId() { return uniqueId; }
-    public void setUniqueId(String uniqueId) { this.uniqueId = uniqueId; }
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public String getUniqueId() { return uniqueId; }  // ✅ Added this method
+    public void setUniqueId(String uniqueId) { this.uniqueId = uniqueId; }
 
     public String getSchoolName() { return schoolName; }
     public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
@@ -78,11 +78,6 @@ public class AdminRegister {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public List<AdminCourse> getCourses() { return courses; }
-    public void setCourses(List<AdminCourse> courses) {
-        this.courses = courses;
-        for (AdminCourse course : courses) {
-            course.setAdmin(this);
-        }
-    }
+    public String getInstitutionType() { return institutionType; }
+    public void setInstitutionType(String institutionType) { this.institutionType = institutionType; }
 }

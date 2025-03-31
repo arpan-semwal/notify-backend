@@ -9,7 +9,6 @@ import java.util.UUID;  // ✅ Import UUID for unique institutionId
 import org.apache.commons.lang3.RandomStringUtils;
 import java.security.SecureRandom;
 import java.util.Random;
-
 @Service
 public class AdminRegisterService {
 
@@ -30,8 +29,6 @@ public class AdminRegisterService {
         } while (adminRegisterRepository.existsByUniqueId(uniqueId));
 
         admin.setUniqueId(uniqueId);
-        admin.setCourses(admin.getCourses());
-
         return adminRegisterRepository.save(admin);
     }
 }
