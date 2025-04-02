@@ -12,17 +12,19 @@ public class CloudStudent {
     private String name;
     private String fatherName;
     private String schoolName;
+    private String course;
     private String mobileNumber;
 
     // Default Constructor
     public CloudStudent() {}
 
-    // Parameterized Constructor
-    public CloudStudent(Long id, String name, String fatherName, String schoolName, String mobileNumber) {
+    // Parameterized Constructor (Fixed: Added course)
+    public CloudStudent(Long id, String name, String fatherName, String schoolName, String course, String mobileNumber) {
         this.id = id;
         this.name = name;
         this.fatherName = fatherName;
         this.schoolName = schoolName;
+        this.course = course; // Fixed: course is now properly assigned
         this.mobileNumber = mobileNumber;
     }
 
@@ -57,6 +59,14 @@ public class CloudStudent {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
     }
 
     public String getMobileNumber() {

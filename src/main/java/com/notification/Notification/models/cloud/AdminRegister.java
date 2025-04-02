@@ -1,8 +1,8 @@
 package com.notification.Notification.models.cloud;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
-import java.util.Random;
+import java.util.List;
 
 @Entity
 @Table(name = "admin_register")
@@ -13,7 +13,7 @@ public class AdminRegister {
     private Long id;
 
     @Column(unique = true, length = 4)
-    private String uniqueId; // ✅ Added unique ID
+    private String uniqueId;
 
     private String schoolName;
     private String city;
@@ -21,12 +21,14 @@ public class AdminRegister {
     private String mobileNumber;
     private String email;
     private String password;
-    private String institutionType; // ✅ Added field for school/college
+    private String institutionType;
+
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference  // ✅ Prevents infinite recursion in JSON serialization
+    private List<AdminCourse> courses;
 
     // Default constructor
-    public AdminRegister() {
-        this.uniqueId = generateUniqueId(); // ✅ Auto-generate unique ID
-    }
+    public AdminRegister() {}
 
     // Parameterized constructor
     public AdminRegister(String schoolName, String city, String address,
@@ -39,25 +41,13 @@ public class AdminRegister {
         this.email = email;
         this.password = password;
         this.institutionType = institutionType;
-        this.uniqueId = generateUniqueId(); // ✅ Auto-generate unique ID
-    }
-
-    // Unique ID generator (4-character alphanumeric)
-    private String generateUniqueId() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder id = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 4; i++) {
-            id.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        return id.toString();
     }
 
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getUniqueId() { return uniqueId; }  // ✅ Added this method
+    public String getUniqueId() { return uniqueId; }
     public void setUniqueId(String uniqueId) { this.uniqueId = uniqueId; }
 
     public String getSchoolName() { return schoolName; }
@@ -80,4 +70,7 @@ public class AdminRegister {
 
     public String getInstitutionType() { return institutionType; }
     public void setInstitutionType(String institutionType) { this.institutionType = institutionType; }
+
+    public List<AdminCourse> getCourses() { return courses; }
+    public void setCourses(List<AdminCourse> courses) { this.courses = courses; }
 }

@@ -17,42 +17,32 @@ public class StudentService {
     @Autowired
     private LocalStudentRepository localStudentRepository; // Local DB
 
-    // Removed @Transactional to allow partial success (Cloud can succeed even if Local fails)
     public void registerStudent(StudentRegisterRequest request) {
         try {
             System.out.println("🔹 Registering student: " + request.getName());
 
-            // ✅ Step 1: Save in Cloud DB
+            // ✅ Save in Cloud DB
             CloudStudent cloudStudent = new CloudStudent();
             cloudStudent.setName(request.getName());
             cloudStudent.setFatherName(request.getFatherName());
             cloudStudent.setSchoolName(request.getSchoolName());
+            cloudStudent.setCourse(request.getCourse()); // Fixed: Saving course field
             cloudStudent.setMobileNumber(request.getMobileNumber());
 
             cloudStudent = studentRepository.save(cloudStudent);
             System.out.println("✅ Saved in Cloud DB! ID: " + cloudStudent.getId());
 
-            // ✅ Step 2: Check if student already exists in Local DB
-            boolean exists = localStudentRepository.existsByNameAndSchoolNameIgnoreCase(
-                    request.getName(), request.getSchoolName()
-            );
+            // ✅ Save in Local DB
+            LocalStudent localStudent = new LocalStudent();
+            localStudent.setId(cloudStudent.getId());
+            localStudent.setName(request.getName());
+            localStudent.setFatherName(request.getFatherName());
+            localStudent.setSchoolName(request.getSchoolName());
+            localStudent.setCourse(request.getCourse()); // Fixed: Saving course field
+            localStudent.setMobileNumber(request.getMobileNumber());
 
-            System.out.println("🔍 Checking existence in Local DB: " + exists);
-
-            // ✅ Step 3: Save in Local DB if not exists
-            if (!exists) {
-                LocalStudent localStudent = new LocalStudent();
-                localStudent.setId(cloudStudent.getId()); // ✅ Ensure same ID as cloud
-                localStudent.setName(request.getName());
-                localStudent.setFatherName(request.getFatherName());
-                localStudent.setSchoolName(request.getSchoolName());
-                localStudent.setMobileNumber(request.getMobileNumber());
-
-                localStudent = localStudentRepository.save(localStudent);
-                System.out.println("✅ Saved in Local DB! ID: " + localStudent.getId());
-            } else {
-                System.out.println("⚠️ Student already exists in Local DB: " + request.getName());
-            }
+            localStudentRepository.save(localStudent);
+            System.out.println("✅ Saved in Local DB! ID: " + localStudent.getId());
 
         } catch (Exception e) {
             System.err.println("❌ Error in Student Registration: " + e.getMessage());
@@ -60,3 +50,4 @@ public class StudentService {
         }
     }
 }
+

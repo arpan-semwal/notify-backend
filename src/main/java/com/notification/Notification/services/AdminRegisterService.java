@@ -1,14 +1,13 @@
 package com.notification.Notification.services;
 
 import com.notification.Notification.models.cloud.AdminRegister;
+import com.notification.Notification.models.cloud.AdminCourse;
 import com.notification.Notification.repository.cloud.AdminRegisterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.UUID;  // ✅ Import UUID for unique institutionId
 import org.apache.commons.lang3.RandomStringUtils;
-import java.security.SecureRandom;
-import java.util.Random;
+
 @Service
 public class AdminRegisterService {
 
@@ -29,6 +28,14 @@ public class AdminRegisterService {
         } while (adminRegisterRepository.existsByUniqueId(uniqueId));
 
         admin.setUniqueId(uniqueId);
+
+        // Ensure courses are linked to the admin before saving
+        if (admin.getCourses() != null) {
+            for (AdminCourse course : admin.getCourses()) {
+                course.setAdmin(admin);
+            }
+        }
+
         return adminRegisterRepository.save(admin);
     }
 }

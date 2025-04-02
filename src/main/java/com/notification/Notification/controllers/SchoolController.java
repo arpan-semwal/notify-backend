@@ -1,0 +1,22 @@
+package com.notification.Notification.controllers;
+
+import com.notification.Notification.services.SchoolService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/schools")
+@CrossOrigin
+public class SchoolController {
+    private final SchoolService schoolService;
+
+    public SchoolController(SchoolService schoolService){
+        this.schoolService = schoolService;
+    }
+
+    @GetMapping("/all")
+    public List<String> getAllSchoolNames() {
+        return schoolService.getAllSchoolNames();
+    }
+}
