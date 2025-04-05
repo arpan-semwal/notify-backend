@@ -1,28 +1,45 @@
 package com.notification.Notification.controllers;
 
-import com.notification.Notification.models.cloud.GlobalMessage;
+import com.notification.Notification.dto.MessageRequest;
 import com.notification.Notification.models.local.LocalMessage;
-import com.notification.Notification.repository.cloud.GlobalMessageRepository;
-import com.notification.Notification.repository.local.LocalMessageRepository;
+import com.notification.Notification.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-@CrossOrigin(origins = "*")
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/messages") // ✅ This is correct
+@RequestMapping("/api/messages")
 public class MessageController {
 
     @Autowired
-    private LocalMessageRepository localMessageRepository;
+    private MessageService messageService;
 
-    @GetMapping  // ✅ Removed "/messages"
-    public ResponseEntity<List<LocalMessage>> getMessages(@RequestParam String schoolName) {
-        List<LocalMessage> messages = localMessageRepository.findBySchoolName(schoolName);
-        if (messages.isEmpty()) {
-            System.out.println("No messages found for school: " + schoolName);
+    // ✅ Endpoint to Save Messages in Global DB
+    @PostMapping("/send")
+    public ResponseEntity<Map<String, String>> sendMessage(@RequestBody MessageRequest request) {
+        boolean success = messageService.saveMessage(request);
+        Map<String, String> response = new HashMap<>();
+        if (success) {
+            response.put("message", "Message sent successfully!");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Failed to send message!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    // ✅ Fetch Messages from Local DB
+    @GetMapping("/fetch")
+    public ResponseEntity<List<LocalMessage>> fetchMessages(
+            @RequestParam String schoolName,
+            @RequestParam String course
+    ) {
+        List<LocalMessage> messages = messageService.getMessages(schoolName, course);
         return ResponseEntity.ok(messages);
     }
 }

@@ -11,17 +11,18 @@ public class AdminCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String courseName;
+
     @ManyToOne
     @JoinColumn(name = "admin_id", nullable = false)
     @JsonBackReference  // ✅ Prevents infinite recursion when converting to JSON
     private AdminRegister admin;
 
-    private String courseName;
-
     public AdminCourse() {}
 
-    public AdminCourse(String courseName) {
+    public AdminCourse(String courseName, AdminRegister admin) {
         this.courseName = courseName;
+        this.admin = admin;
     }
 
     public Long getId() { return id; }

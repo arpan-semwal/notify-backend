@@ -11,18 +11,21 @@ public class LocalStudent {
     private String name;
     private String fatherName;
     private String schoolName;
+    private String course;
     private String mobileNumber;
 
     // Default Constructor
     public LocalStudent() {}
 
     // Parameterized Constructor
-    public LocalStudent(Long id, String name, String fatherName, String schoolName, String mobileNumber) {
+    public LocalStudent(Long id, String name, String fatherName, String schoolName, String course , String mobileNumber) {
         this.id = id;
         this.name = name;
         this.fatherName = fatherName;
         this.schoolName = schoolName;
+        this.course = course;
         this.mobileNumber = mobileNumber;
+
     }
 
     // Getters and Setters
@@ -34,6 +37,10 @@ public class LocalStudent {
     public void setFatherName(String fatherName) { this.fatherName = fatherName; }
     public String getSchoolName() { return schoolName; }
     public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
+    public String getCourse(){return course;}
+    public void setCourse(String course){this.course = course;}
+
+
     public String getMobileNumber() { return mobileNumber; }
     public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
 }

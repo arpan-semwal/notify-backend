@@ -1,53 +1,44 @@
 package com.notification.Notification.models.local;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "local_messages")
+@Table(name = "local_message")
 public class LocalMessage {
 
     @Id
-    private Long id;  // Keep same ID as cloud
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "content", nullable = false)
-    private String content;
-
-    @Column(name = "school_name", nullable = false)
     private String schoolName;
+    private String course;
+    private String content;
+    private Timestamp timestamp;
 
-    @Column(name = "timestamp", nullable = false)
-    private String timestamp;
+    // Constructors
+    public LocalMessage() {}
 
-    // ✅ Explicit Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
+    public LocalMessage(String schoolName, String course, String content, Timestamp timestamp) {
         this.schoolName = schoolName;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
+        this.course = course;
+        this.content = content;
         this.timestamp = timestamp;
     }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getSchoolName() { return schoolName; }
+    public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
+
+    public String getCourse() { return course; }
+    public void setCourse(String course) { this.course = course; }
+
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+
+    public Timestamp getTimestamp() { return timestamp; }
+    public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
 }
