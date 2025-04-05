@@ -1,7 +1,7 @@
 package com.notification.Notification.dto;
 
 public class MessageRequest {
-    private String schoolName;  // ✅ Add schoolName field
+    private String schoolUniqueId;  // 🔄 Changed from schoolName
     private String course;
     private String message;
 
@@ -10,15 +10,15 @@ public class MessageRequest {
     }
 
     // ✅ Constructor with all fields
-    public MessageRequest(String schoolName, String course, String message) {
-        this.schoolName = schoolName;
+    public MessageRequest(String schoolUniqueId, String course, String message) {
+        this.schoolUniqueId = schoolUniqueId;
         this.course = course;
         this.message = message;
     }
 
     // ✅ Getters
-    public String getSchoolName() {
-        return schoolName;
+    public String getSchoolUniqueId() {
+        return schoolUniqueId;
     }
 
     public String getCourse() {
@@ -30,8 +30,8 @@ public class MessageRequest {
     }
 
     // ✅ Setters
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setSchoolUniqueId(String schoolUniqueId) {
+        this.schoolUniqueId = schoolUniqueId;
     }
 
     public void setCourse(String course) {

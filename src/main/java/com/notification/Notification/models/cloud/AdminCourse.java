@@ -2,9 +2,8 @@ package com.notification.Notification.models.cloud;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
 @Entity
-@Table(name = "admin_courses")
+@Table(name = "admin_course")
 public class AdminCourse {
 
     @Id
@@ -13,24 +12,28 @@ public class AdminCourse {
 
     private String courseName;
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
-    @JsonBackReference  // ✅ Prevents infinite recursion when converting to JSON
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "unique_id", referencedColumnName = "uniqueId") // 👈 use uniqueId instead of ID
+    @JsonBackReference
     private AdminRegister admin;
 
+    // Constructors
     public AdminCourse() {}
 
-    public AdminCourse(String courseName, AdminRegister admin) {
+    public AdminCourse(String courseName) {
         this.courseName = courseName;
-        this.admin = admin;
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
+
     public void setId(Long id) { this.id = id; }
 
     public String getCourseName() { return courseName; }
+
     public void setCourseName(String courseName) { this.courseName = courseName; }
 
     public AdminRegister getAdmin() { return admin; }
+
     public void setAdmin(AdminRegister admin) { this.admin = admin; }
 }

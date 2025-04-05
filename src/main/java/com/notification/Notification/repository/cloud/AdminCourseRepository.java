@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface AdminCourseRepository extends JpaRepository<AdminCourse, Long> {
-    List<AdminCourse> findByAdmin_SchoolName(String schoolName);
-}
 
+    // ✅ Update to use schoolUniqueId instead of schoolName
+    List<AdminCourse> findByAdmin_UniqueId(String uniqueId);
+}

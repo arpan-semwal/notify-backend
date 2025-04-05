@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class MessageService {
 
@@ -23,7 +24,7 @@ public class MessageService {
     public boolean saveMessage(MessageRequest request) {
         try {
             GlobalMessage globalMessage = new GlobalMessage();
-            globalMessage.setSchoolName(request.getSchoolName());
+            globalMessage.setSchoolUniqueId(request.getSchoolUniqueId()); // ✅ Updated
             globalMessage.setCourse(request.getCourse());
             globalMessage.setContent(request.getMessage());
             globalMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -38,23 +39,23 @@ public class MessageService {
         }
     }
 
-    public List<LocalMessage> getMessages(String schoolName, String course) {
+    public List<LocalMessage> getMessages(String schoolUniqueId, String course) {
         // ✅ Fetch messages from the local database
-        List<LocalMessage> localMessages = localMessageRepository.findBySchoolNameAndCourse(schoolName, course);
+        List<LocalMessage> localMessages = localMessageRepository.findBySchoolUniqueIdAndCourse(schoolUniqueId, course);
         if (!localMessages.isEmpty()) {
             return localMessages;
         }
 
         // ✅ Fetch messages from the global database if not found locally
-        List<GlobalMessage> globalMessages = globalMessageRepository.findBySchoolNameAndCourse(schoolName, course);
+        List<GlobalMessage> globalMessages = globalMessageRepository.findBySchoolUniqueIdAndCourse(schoolUniqueId, course);
 
         if (!globalMessages.isEmpty()) {
-            // ✅ Convert GlobalMessage to LocalMessage and ensure correct type
+            // ✅ Convert GlobalMessage to LocalMessage
             List<LocalMessage> newLocalMessages = new ArrayList<>();
 
             for (GlobalMessage message : globalMessages) {
                 LocalMessage localMessage = new LocalMessage(
-                        message.getSchoolName(),
+                        message.getSchoolUniqueId(),
                         message.getCourse(),
                         message.getContent(),
                         new Timestamp(System.currentTimeMillis())
@@ -65,10 +66,9 @@ public class MessageService {
             // ✅ Save all converted messages into the local database
             localMessageRepository.saveAll(newLocalMessages);
 
-            // ✅ Return explicitly converted List<LocalMessage>
-            return new ArrayList<>(newLocalMessages);
+            return newLocalMessages;
         }
 
-        return new ArrayList<>(); // Return an empty list instead of null
+        return new ArrayList<>(); // Empty list if nothing found
     }
 }

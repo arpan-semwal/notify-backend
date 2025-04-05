@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GlobalMessageRepository extends JpaRepository<GlobalMessage, Long> {
-    List<GlobalMessage> findBySchoolNameAndCourse(String schoolName, String course);
+    List<GlobalMessage> findBySchoolUniqueIdAndCourse(String schoolUniqueId, String course);
 }
-

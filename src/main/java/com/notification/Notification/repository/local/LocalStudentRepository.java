@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface LocalStudentRepository extends JpaRepository<LocalStudent, Long> {
 
     // ✅ Ensure case-insensitive check for student existence
-    boolean existsByNameAndSchoolNameIgnoreCase(String name, String schoolName);
+    boolean existsByNameAndSchoolUniqueIdIgnoreCase(String name, String schoolUniqueId);
+
 }

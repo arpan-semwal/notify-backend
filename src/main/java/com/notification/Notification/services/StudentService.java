@@ -7,38 +7,37 @@ import com.notification.Notification.repository.cloud.StudentRepository;
 import com.notification.Notification.repository.local.LocalStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class StudentService {
 
     @Autowired
-    private StudentRepository studentRepository; // Cloud DB
+    private StudentRepository studentRepository;
 
     @Autowired
-    private LocalStudentRepository localStudentRepository; // Local DB
+    private LocalStudentRepository localStudentRepository;
 
     public void registerStudent(StudentRegisterRequest request) {
         try {
             System.out.println("🔹 Registering student: " + request.getName());
 
-            // ✅ Save in Cloud DB
+            // Cloud
             CloudStudent cloudStudent = new CloudStudent();
             cloudStudent.setName(request.getName());
             cloudStudent.setFatherName(request.getFatherName());
-            cloudStudent.setSchoolName(request.getSchoolName());
-            cloudStudent.setCourse(request.getCourse()); // Fixed: Saving course field
+            cloudStudent.setSchoolUniqueId(request.getSchoolUniqueId()); // ✅
+            cloudStudent.setCourse(request.getCourse());
             cloudStudent.setMobileNumber(request.getMobileNumber());
 
             cloudStudent = studentRepository.save(cloudStudent);
             System.out.println("✅ Saved in Cloud DB! ID: " + cloudStudent.getId());
 
-            // ✅ Save in Local DB
+            // Local
             LocalStudent localStudent = new LocalStudent();
             localStudent.setId(cloudStudent.getId());
             localStudent.setName(request.getName());
             localStudent.setFatherName(request.getFatherName());
-            localStudent.setSchoolName(request.getSchoolName());
-            localStudent.setCourse(request.getCourse()); // Fixed: Saving course field
+            localStudent.setSchoolUniqueId(request.getSchoolUniqueId()); // ✅
+            localStudent.setCourse(request.getCourse());
             localStudent.setMobileNumber(request.getMobileNumber());
 
             localStudentRepository.save(localStudent);
@@ -50,4 +49,3 @@ public class StudentService {
         }
     }
 }
-

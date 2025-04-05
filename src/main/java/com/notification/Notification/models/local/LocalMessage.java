@@ -11,7 +11,7 @@ public class LocalMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String schoolName;
+    private String schoolUniqueId;
     private String course;
     private String content;
     private Timestamp timestamp;
@@ -19,8 +19,8 @@ public class LocalMessage {
     // Constructors
     public LocalMessage() {}
 
-    public LocalMessage(String schoolName, String course, String content, Timestamp timestamp) {
-        this.schoolName = schoolName;
+    public LocalMessage(String schoolUniqueId, String course, String content, Timestamp timestamp) {
+        this.schoolUniqueId = schoolUniqueId;
         this.course = course;
         this.content = content;
         this.timestamp = timestamp;
@@ -30,8 +30,8 @@ public class LocalMessage {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getSchoolName() { return schoolName; }
-    public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
+    public String getSchoolUniqueId() { return schoolUniqueId; }
+    public void setSchoolUniqueId(String schoolUniqueId) { this.schoolUniqueId = schoolUniqueId; }
 
     public String getCourse() { return course; }
     public void setCourse(String course) { this.course = course; }

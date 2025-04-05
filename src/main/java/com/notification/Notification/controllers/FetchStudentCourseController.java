@@ -8,14 +8,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("*") // Allows frontend requests (Adjust as needed)
+@CrossOrigin("*")
 public class FetchStudentCourseController {
 
     @Autowired
     private FetchStudentCourseService fetchStudentCourseService;
 
-    @GetMapping("/fetchstudentcourse/{schoolName}")
-    public List<String> getCoursesBySchool(@PathVariable String schoolName) {
-        return fetchStudentCourseService.getCoursesBySchool(schoolName);
+    @GetMapping("/fetchstudentcourse/{schoolUniqueId}") // ✅ CHANGED
+    public List<String> getCoursesBySchool(@PathVariable String schoolUniqueId) {
+        return fetchStudentCourseService.getCoursesBySchool(schoolUniqueId);
     }
 }
+
+

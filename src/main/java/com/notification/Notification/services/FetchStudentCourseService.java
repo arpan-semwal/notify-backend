@@ -14,8 +14,8 @@ public class FetchStudentCourseService {
     @Autowired
     private AdminCourseRepository adminCourseRepository;
 
-    public List<String> getCoursesBySchool(String schoolName) {
-        List<AdminCourse> courses = adminCourseRepository.findByAdmin_SchoolName(schoolName);
+    public List<String> getCoursesBySchool(String schoolUniqueId) {
+        List<AdminCourse> courses = adminCourseRepository.findByAdmin_UniqueId(schoolUniqueId);
         return courses.stream().map(AdminCourse::getCourseName).collect(Collectors.toList());
     }
 }
