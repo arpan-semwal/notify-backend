@@ -1,18 +1,18 @@
 package com.notification.Notification.dto;
 
 public class MessageRequest {
-    private String schoolUniqueId;  // 🔄 Changed from schoolName
-    private String course;
-    private String message;
+    private String schoolUniqueId;      // Unique ID of the school
+    private String courseUniqueId;      // Unique ID of the course
+    private String message;             // Message content
 
     // ✅ Default Constructor
     public MessageRequest() {
     }
 
     // ✅ Constructor with all fields
-    public MessageRequest(String schoolUniqueId, String course, String message) {
+    public MessageRequest(String schoolUniqueId, String courseUniqueId, String message) {
         this.schoolUniqueId = schoolUniqueId;
-        this.course = course;
+        this.courseUniqueId = courseUniqueId;
         this.message = message;
     }
 
@@ -21,8 +21,8 @@ public class MessageRequest {
         return schoolUniqueId;
     }
 
-    public String getCourse() {
-        return course;
+    public String getCourseUniqueId() {
+        return courseUniqueId;
     }
 
     public String getMessage() {
@@ -34,8 +34,8 @@ public class MessageRequest {
         this.schoolUniqueId = schoolUniqueId;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCourseUniqueId(String courseUniqueId) {
+        this.courseUniqueId = courseUniqueId;
     }
 
     public void setMessage(String message) {

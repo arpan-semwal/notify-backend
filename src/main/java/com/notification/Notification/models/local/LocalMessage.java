@@ -12,16 +12,16 @@ public class LocalMessage {
     private Long id;
 
     private String schoolUniqueId;
-    private String course;
+    private String courseUniqueId; // Only store courseUniqueId now
     private String content;
     private Timestamp timestamp;
 
     // Constructors
     public LocalMessage() {}
 
-    public LocalMessage(String schoolUniqueId, String course, String content, Timestamp timestamp) {
+    public LocalMessage(String schoolUniqueId, String courseUniqueId, String content, Timestamp timestamp) {
         this.schoolUniqueId = schoolUniqueId;
-        this.course = course;
+        this.courseUniqueId = courseUniqueId;  // Store courseUniqueId
         this.content = content;
         this.timestamp = timestamp;
     }
@@ -33,8 +33,8 @@ public class LocalMessage {
     public String getSchoolUniqueId() { return schoolUniqueId; }
     public void setSchoolUniqueId(String schoolUniqueId) { this.schoolUniqueId = schoolUniqueId; }
 
-    public String getCourse() { return course; }
-    public void setCourse(String course) { this.course = course; }
+    public String getCourseUniqueId() { return courseUniqueId; }
+    public void setCourseUniqueId(String courseUniqueId) { this.courseUniqueId = courseUniqueId; }
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }

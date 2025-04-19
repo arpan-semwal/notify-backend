@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface AdminCourseRepository extends JpaRepository<AdminCourse, Long> {
 
-    // ✅ Update to use schoolUniqueId instead of schoolName
     List<AdminCourse> findByAdmin_UniqueId(String uniqueId);
+
+    boolean existsByCourseUniqueId(String courseUniqueId); // ✅ Added for uniqueness check
 }

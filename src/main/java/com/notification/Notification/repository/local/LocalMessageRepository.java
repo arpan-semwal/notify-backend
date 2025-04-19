@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LocalMessageRepository extends JpaRepository<LocalMessage, Long> {
-    List<LocalMessage> findBySchoolUniqueIdAndCourse(String schoolUniqueId, String course);
+    List<LocalMessage> findBySchoolUniqueIdAndCourseUniqueId(String schoolUniqueId, String courseUniqueId);
 }
