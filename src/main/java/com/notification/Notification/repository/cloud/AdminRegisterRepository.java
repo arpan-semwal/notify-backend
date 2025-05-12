@@ -19,4 +19,7 @@ public interface AdminRegisterRepository extends JpaRepository<AdminRegister, Lo
 
     @Query("SELECT a FROM AdminRegister a")
     List<AdminRegister> findAllAdmins();
+
+    @Query("SELECT a FROM AdminRegister a WHERE a.schoolName = :schoolName")
+    AdminRegister findBySchoolName(String schoolName);
 }

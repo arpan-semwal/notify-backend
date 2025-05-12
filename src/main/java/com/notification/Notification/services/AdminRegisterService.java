@@ -1,10 +1,8 @@
 package com.notification.Notification.services;
-
 import com.notification.Notification.models.cloud.AdminRegister;
 import com.notification.Notification.models.cloud.AdminCourse;
 import com.notification.Notification.repository.cloud.AdminRegisterRepository;
 import com.notification.Notification.repository.cloud.AdminCourseRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +51,9 @@ public class AdminRegisterService {
     // ✅ Helper method to check if courseUniqueId exists
     private boolean courseAlreadyExists(String courseUniqueId) {
         return adminCourseRepository.existsByCourseUniqueId(courseUniqueId);
+    }
+
+    public AdminRegister findBySchoolName(String schoolName) {
+        return adminRegisterRepository.findBySchoolName(schoolName);
     }
 }

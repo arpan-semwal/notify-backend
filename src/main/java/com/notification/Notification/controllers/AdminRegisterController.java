@@ -1,5 +1,7 @@
 package com.notification.Notification.controllers;
 
+import com.notification.Notification.dto.AdminLoginRequest;
+import com.notification.Notification.dto.AdminLoginResponse;
 import com.notification.Notification.models.cloud.AdminCourse;
 import com.notification.Notification.models.cloud.AdminRegister;
 import com.notification.Notification.services.AdminRegisterService;
@@ -41,7 +43,29 @@ public class AdminRegisterController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Admin registered successfully");
         response.put("uniqueId", savedAdmin.getUniqueId());
-        response.put("institutionType", savedAdmin.getInstitutionType()); // Send institution type back
+
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<AdminLoginResponse> loginAdmin(@RequestBody AdminLoginRequest request) {
+        AdminRegister admin = adminRegisterService.findBySchoolName(request.getSchoolName());
+
+        if (admin == null || !admin.getPassword().equals(request.getPassword())) {
+            return ResponseEntity
+                    .status(401)
+                    .body(new AdminLoginResponse(false, "Invalid credentials", null, null, null));
+        }
+
+        AdminLoginResponse response = new AdminLoginResponse(
+                true,
+                "Login successful",
+                admin.getSchoolName(),
+                admin.getUniqueId(),
+                admin.getEmail()
+        );
 
         return ResponseEntity.ok(response);
     }

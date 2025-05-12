@@ -3,7 +3,6 @@ package com.notification.Notification.models.cloud;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
-
 @Entity
 @Table(name = "admin_register")
 public class AdminRegister {
@@ -21,29 +20,24 @@ public class AdminRegister {
     private String mobileNumber;
     private String email;
     private String password;
-    private String institutionType;
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference  // ✅ Prevents infinite recursion in JSON serialization
+    @JsonManagedReference
     private List<AdminCourse> courses;
 
-    // Default constructor
     public AdminRegister() {}
 
-    // Parameterized constructor
     public AdminRegister(String schoolName, String city, String address,
-                         String mobileNumber, String email, String password,
-                         String institutionType) {
+                         String mobileNumber, String email, String password) {
         this.schoolName = schoolName;
         this.city = city;
         this.address = address;
         this.mobileNumber = mobileNumber;
         this.email = email;
         this.password = password;
-        this.institutionType = institutionType;
     }
 
-    // Getters and Setters
+    // Getters and Setters (without institutionType)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -67,9 +61,6 @@ public class AdminRegister {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-    public String getInstitutionType() { return institutionType; }
-    public void setInstitutionType(String institutionType) { this.institutionType = institutionType; }
 
     public List<AdminCourse> getCourses() { return courses; }
     public void setCourses(List<AdminCourse> courses) { this.courses = courses; }
