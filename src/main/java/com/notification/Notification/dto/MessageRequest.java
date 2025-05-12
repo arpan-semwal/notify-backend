@@ -1,28 +1,28 @@
 package com.notification.Notification.dto;
 
 public class MessageRequest {
-    private String schoolName;  // ✅ Add schoolName field
-    private String course;
-    private String message;
+    private String schoolUniqueId;      // Unique ID of the school
+    private String courseUniqueId;      // Unique ID of the course
+    private String message;             // Message content
 
     // ✅ Default Constructor
     public MessageRequest() {
     }
 
     // ✅ Constructor with all fields
-    public MessageRequest(String schoolName, String course, String message) {
-        this.schoolName = schoolName;
-        this.course = course;
+    public MessageRequest(String schoolUniqueId, String courseUniqueId, String message) {
+        this.schoolUniqueId = schoolUniqueId;
+        this.courseUniqueId = courseUniqueId;
         this.message = message;
     }
 
     // ✅ Getters
-    public String getSchoolName() {
-        return schoolName;
+    public String getSchoolUniqueId() {
+        return schoolUniqueId;
     }
 
-    public String getCourse() {
-        return course;
+    public String getCourseUniqueId() {
+        return courseUniqueId;
     }
 
     public String getMessage() {
@@ -30,12 +30,12 @@ public class MessageRequest {
     }
 
     // ✅ Setters
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setSchoolUniqueId(String schoolUniqueId) {
+        this.schoolUniqueId = schoolUniqueId;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCourseUniqueId(String courseUniqueId) {
+        this.courseUniqueId = courseUniqueId;
     }
 
     public void setMessage(String message) {

@@ -19,7 +19,7 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    // ✅ Endpoint to Save Messages in Global DB
+    // Save Message to Global DB using schoolUniqueId
     @PostMapping("/send")
     public ResponseEntity<Map<String, String>> sendMessage(@RequestBody MessageRequest request) {
         boolean success = messageService.saveMessage(request);
@@ -33,13 +33,25 @@ public class MessageController {
         }
     }
 
-    // ✅ Fetch Messages from Local DB
+    // Fetch Messages from Local DB using schoolUniqueId
     @GetMapping("/fetch")
     public ResponseEntity<List<LocalMessage>> fetchMessages(
-            @RequestParam String schoolName,
-            @RequestParam String course
+            @RequestParam String schoolUniqueId,
+            @RequestParam String courseUniqueId
     ) {
-        List<LocalMessage> messages = messageService.getMessages(schoolName, course);
-        return ResponseEntity.ok(messages);
+        return ResponseEntity.ok(messageService.getMessages(schoolUniqueId, courseUniqueId));
+    }
+
+    // Sync messages from global to local DB
+    @GetMapping("/sync")
+    public ResponseEntity<Map<String, Object>> syncMessages(@RequestParam String schoolUniqueId,
+                                                            @RequestParam String courseUniqueId) {
+        messageService.syncMessages(schoolUniqueId, courseUniqueId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Sync completed successfully");
+
+        return ResponseEntity.ok(response);
     }
 }

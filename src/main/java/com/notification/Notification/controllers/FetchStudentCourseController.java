@@ -1,5 +1,6 @@
 package com.notification.Notification.controllers;
 
+import com.notification.Notification.models.cloud.AdminCourse;
 import com.notification.Notification.services.FetchStudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,14 +9,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("*") // Allows frontend requests (Adjust as needed)
+@CrossOrigin("*")
 public class FetchStudentCourseController {
 
     @Autowired
     private FetchStudentCourseService fetchStudentCourseService;
 
-    @GetMapping("/fetchstudentcourse/{schoolName}")
-    public List<String> getCoursesBySchool(@PathVariable String schoolName) {
-        return fetchStudentCourseService.getCoursesBySchool(schoolName);
+    @GetMapping("/fetchstudentcourse/{schoolUniqueId}")
+    public List<AdminCourse> getCoursesBySchool(@PathVariable String schoolUniqueId) {
+        return fetchStudentCourseService.getCoursesBySchool(schoolUniqueId);
     }
+
 }

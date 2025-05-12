@@ -9,9 +9,17 @@ import java.util.List;
 
 @Repository
 public interface AdminRegisterRepository extends JpaRepository<AdminRegister, Long> {
+
     boolean existsByEmail(String email);
-    boolean existsByUniqueId(String uniqueId);  // ✅ Check for unique ID existence
+
+    boolean existsByUniqueId(String uniqueId);
 
     @Query("SELECT a.schoolName FROM AdminRegister a")
     List<String> findAllSchoolNames();
+
+    @Query("SELECT a FROM AdminRegister a")
+    List<AdminRegister> findAllAdmins();
+
+    @Query("SELECT a FROM AdminRegister a WHERE a.schoolName = :schoolName")
+    AdminRegister findBySchoolName(String schoolName);
 }

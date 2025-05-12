@@ -1,5 +1,5 @@
-
 package com.notification.Notification.models.cloud;
+
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,30 +11,29 @@ public class GlobalMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String schoolName;
-    private String course;
+    private String schoolUniqueId;
+    private String courseUniqueId; // Changed from 'course'
     private String content;
     private Timestamp timestamp;
 
-    // ✅ Default Constructor
+    // Constructors
     public GlobalMessage() {}
 
-    public GlobalMessage(String schoolName, String course, String content, Timestamp timestamp) {
-        this.schoolName = schoolName;
-        this.course = course;
+    public GlobalMessage(String schoolUniqueId, String courseUniqueId, String content, Timestamp timestamp) {
+        this.schoolUniqueId = schoolUniqueId;
+        this.courseUniqueId = courseUniqueId;
         this.content = content;
         this.timestamp = timestamp;
     }
 
-    // ✅ Getters and Setters
+    // Getters and Setters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getSchoolName() { return schoolName; }
-    public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
+    public String getSchoolUniqueId() { return schoolUniqueId; }
+    public void setSchoolUniqueId(String schoolUniqueId) { this.schoolUniqueId = schoolUniqueId; }
 
-    public String getCourse() { return course; }
-    public void setCourse(String course) { this.course = course; }
+    public String getCourseUniqueId() { return courseUniqueId; }
+    public void setCourseUniqueId(String courseUniqueId) { this.courseUniqueId = courseUniqueId; }
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }

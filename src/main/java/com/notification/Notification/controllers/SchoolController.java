@@ -1,5 +1,6 @@
 package com.notification.Notification.controllers;
 
+import com.notification.Notification.dto.SchoolResponse;
 import com.notification.Notification.services.SchoolService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class SchoolController {
     }
 
     @GetMapping("/all")
-    public List<String> getAllSchoolNames() {
-        return schoolService.getAllSchoolNames();
+    public List<SchoolResponse> getAllSchools() {
+        return schoolService.getAllSchools();
     }
 }

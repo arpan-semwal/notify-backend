@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class MessageService {
 
@@ -20,55 +20,79 @@ public class MessageService {
     @Autowired
     private LocalMessageRepository localMessageRepository;
 
+    // ✅ Save message to global DB
     public boolean saveMessage(MessageRequest request) {
         try {
-            GlobalMessage globalMessage = new GlobalMessage();
-            globalMessage.setSchoolName(request.getSchoolName());
-            globalMessage.setCourse(request.getCourse());
-            globalMessage.setContent(request.getMessage());
-            globalMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
-
-            // ✅ Save to global database
-            globalMessageRepository.save(globalMessage);
-
+            GlobalMessage message = new GlobalMessage(
+                    request.getSchoolUniqueId(),
+                    request.getCourseUniqueId(),
+                    request.getMessage(),
+                    new Timestamp(System.currentTimeMillis())
+            );
+            globalMessageRepository.save(message);
+            System.out.println("✅ [SAVE] Message saved to global DB:");
+            System.out.println("    • School: " + message.getSchoolUniqueId());
+            System.out.println("    • Course: " + message.getCourseUniqueId());
+            System.out.println("    • Content: " + message.getContent());
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("❌ [SAVE ERROR] Failed to save message: " + e.getMessage());
             return false;
         }
     }
 
-    public List<LocalMessage> getMessages(String schoolName, String course) {
-        // ✅ Fetch messages from the local database
-        List<LocalMessage> localMessages = localMessageRepository.findBySchoolNameAndCourse(schoolName, course);
-        if (!localMessages.isEmpty()) {
-            return localMessages;
+    // ✅ Fetch messages from local DB
+    public List<LocalMessage> getMessages(String schoolUniqueId, String courseUniqueId) {
+        List<LocalMessage> messages = localMessageRepository.findBySchoolUniqueIdAndCourseUniqueId(schoolUniqueId, courseUniqueId);
+        System.out.println("📥 [FETCH] Fetching messages for:");
+        System.out.println("    • School: " + schoolUniqueId);
+        System.out.println("    • Course: " + courseUniqueId);
+        System.out.println("    • Total Local Messages: " + messages.size());
+
+        int counter = 1;
+        for (LocalMessage message : messages) {
+            System.out.println("    #" + counter + " → " + message.getContent());
+            counter++;
         }
 
-        // ✅ Fetch messages from the global database if not found locally
-        List<GlobalMessage> globalMessages = globalMessageRepository.findBySchoolNameAndCourse(schoolName, course);
+        return messages;
+    }
 
-        if (!globalMessages.isEmpty()) {
-            // ✅ Convert GlobalMessage to LocalMessage and ensure correct type
-            List<LocalMessage> newLocalMessages = new ArrayList<>();
+    // ✅ Sync new messages from global to local
+    public void syncMessages(String schoolUniqueId, String courseUniqueId) {
+        System.out.println("🔄 [SYNC] Starting sync for:");
+        System.out.println("    • School: " + schoolUniqueId);
+        System.out.println("    • Course: " + courseUniqueId);
 
-            for (GlobalMessage message : globalMessages) {
-                LocalMessage localMessage = new LocalMessage(
-                        message.getSchoolName(),
-                        message.getCourse(),
-                        message.getContent(),
-                        new Timestamp(System.currentTimeMillis())
+        List<GlobalMessage> globalMessages = globalMessageRepository.findBySchoolUniqueIdAndCourseUniqueId(schoolUniqueId, courseUniqueId);
+        List<LocalMessage> localMessages = localMessageRepository.findBySchoolUniqueIdAndCourseUniqueId(schoolUniqueId, courseUniqueId);
+
+        System.out.println("🌐 Global messages found: " + globalMessages.size());
+        System.out.println("📦 Local messages before sync: " + localMessages.size());
+
+        int syncedCount = 0;
+
+        for (GlobalMessage global : globalMessages) {
+            boolean alreadyExists = localMessages.stream().anyMatch(local ->
+                    local.getContent().equals(global.getContent())
+            );
+
+            if (!alreadyExists) {
+                LocalMessage newLocal = new LocalMessage(
+                        global.getSchoolUniqueId(),
+                        global.getCourseUniqueId(),
+                        global.getContent(),
+                        global.getTimestamp()
                 );
-                newLocalMessages.add(localMessage);
+                localMessageRepository.save(newLocal);
+                System.out.println("    ✔️ Synced new message: " + newLocal.getContent());
+                syncedCount++;
             }
-
-            // ✅ Save all converted messages into the local database
-            localMessageRepository.saveAll(newLocalMessages);
-
-            // ✅ Return explicitly converted List<LocalMessage>
-            return new ArrayList<>(newLocalMessages);
         }
 
-        return new ArrayList<>(); // Return an empty list instead of null
+        List<LocalMessage> updatedLocalMessages = localMessageRepository.findBySchoolUniqueIdAndCourseUniqueId(schoolUniqueId, courseUniqueId);
+        System.out.println("✅ [SYNC COMPLETE]");
+        System.out.println("    • New messages synced: " + syncedCount);
+        System.out.println("    • Total local messages now: " + updatedLocalMessages.size());
     }
 }
