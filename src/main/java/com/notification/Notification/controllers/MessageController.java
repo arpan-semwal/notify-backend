@@ -1,6 +1,7 @@
 package com.notification.Notification.controllers;
 
 import com.notification.Notification.dto.MessageRequest;
+import com.notification.Notification.models.cloud.GlobalMessage;
 import com.notification.Notification.models.local.LocalMessage;
 import com.notification.Notification.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,15 @@ public class MessageController {
         response.put("message", "Sync completed successfully");
 
         return ResponseEntity.ok(response);
+    }
+
+
+
+    @GetMapping("/fetch-global")
+    public ResponseEntity<List<GlobalMessage>> fetchGlobalMessages(
+            @RequestParam String schoolUniqueId,
+            @RequestParam String courseUniqueId) {
+        List<GlobalMessage> messages = messageService.getGlobalMessages(schoolUniqueId, courseUniqueId);
+        return ResponseEntity.ok(messages);
     }
 }

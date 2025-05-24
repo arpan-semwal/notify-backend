@@ -22,4 +22,17 @@ public class SchoolService {
                 .map(admin -> new SchoolResponse(admin.getSchoolName(), admin.getUniqueId()))
                 .collect(Collectors.toList());
     }
+
+
+
+
+    public List<SchoolResponse> searchSchools(String query) {
+        if (query == null || query.isEmpty()) {
+            return List.of();
+        }
+        List<AdminRegister> admins = adminRegisterRepository.findBySchoolNameContainingIgnoreCase(query);
+        return admins.stream()
+                .map(admin -> new SchoolResponse(admin.getSchoolName(), admin.getUniqueId()))
+                .collect(Collectors.toList());
+    }
 }

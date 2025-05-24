@@ -13,13 +13,13 @@ public class AdminRegister {
 
     @Column(unique = true, length = 4)
     private String uniqueId;
-
     private String schoolName;
     private String city;
     private String address;
     private String mobileNumber;
     private String email;
     private String password;
+
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

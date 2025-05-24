@@ -95,4 +95,15 @@ public class MessageService {
         System.out.println("    • New messages synced: " + syncedCount);
         System.out.println("    • Total local messages now: " + updatedLocalMessages.size());
     }
+
+
+    // New method to fetch messages from Global DB for admin
+    public List<GlobalMessage> getGlobalMessages(String schoolUniqueId, String courseUniqueId) {
+        List<GlobalMessage> messages = globalMessageRepository.findBySchoolUniqueIdAndCourseUniqueId(schoolUniqueId, courseUniqueId);
+        System.out.println("📤 [FETCH GLOBAL] Admin fetching messages for:");
+        System.out.println("    • School: " + schoolUniqueId);
+        System.out.println("    • Course: " + courseUniqueId);
+        System.out.println("    • Total messages: " + messages.size());
+        return messages;
+    }
 }

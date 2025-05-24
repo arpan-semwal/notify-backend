@@ -16,8 +16,16 @@ public class SchoolController {
         this.schoolService = schoolService;
     }
 
+
+
     @GetMapping("/all")
     public List<SchoolResponse> getAllSchools() {
         return schoolService.getAllSchools();
+    }
+
+
+    @GetMapping("/search")
+    public List<SchoolResponse> searchSchools(@RequestParam String query) {
+        return schoolService.searchSchools(query);
     }
 }
